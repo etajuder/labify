@@ -6,8 +6,6 @@ import path from 'path';
 import Routes from '../routes';
 
 const app = express();
-
-
 const router = express.Router();
 
 // Log all requests
