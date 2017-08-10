@@ -16,6 +16,10 @@ module.exports = function(sequelize, DataTypes) {
     labId: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    time: {
+      type: DataTypes.STRING,
+      allowNull: false,
     }
   }, {
     classMethods: {

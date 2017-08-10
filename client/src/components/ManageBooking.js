@@ -8,7 +8,7 @@ class ManageBooking extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { bookings: [] };
+    this.state = { bookings: [], purposes: [] };
   }
   componentWillReceiveProps(nextProps) {
     Alert('New Props', nextProps);

@@ -17,22 +17,42 @@ const windowsWidth = Dimensions.get('window').width;
 const windowsHeight = Dimensions.get('window').height;
 
 class Intro extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = { isAuthenticated: this.props.isAuthenticated }
+    console.log(this.props);
+  }
+
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ isAuthenticated: nextProps.isAuthenticated });
+  }
+
+
   static navigationOptions = {
     title: "Intro",
     header: null,
     headerVisible: false,
   }
   onSkipBtnHandle = (index) => {
-    this.props.navigation.dispatch({ type: 'Login' });
+    if (this.state.isAuthenticated) {
+      this.props.navigation.dispatch({ type: 'AppScreen' });
+    } else {
+      this.props.navigation.dispatch({ type: 'Login' });
+    }
   }
   doneBtnHandle = () => {
-    this.props.navigation.dispatch({ type: 'Login' });
+    if (this.state.isAuthenticated) {
+      this.props.navigation.dispatch({ type: 'AppScreen' });
+    } else {
+      this.props.navigation.dispatch({ type: 'Login' });
+    }
   }
   nextBtnHandle = (index) => {
-    console.log(index);
   }
   onSlideChangeHandle = (index, total) => {
-    console.log(index, total);
   }
 
   render() {
@@ -237,7 +257,7 @@ Intro.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.auth.isLoggedIn,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 

@@ -8,13 +8,16 @@ import {
   View,
   Image,
   TextInput,
-  Alert
+  Alert,
+  ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
 import Button from 'apsl-react-native-button'
 import { Hideo } from 'react-native-textinput-effects';
 import { NavigationActions } from 'react-navigation';
 import { userLogin } from '../actions/userActions';
+import * as Progress from 'react-native-progress';
+import appStyles from '../assets/style/Styles';
 
 const bottom = 180 / 100;
 const styles = StyleSheet.create({
@@ -24,8 +27,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   loginLogo: {
-    width: 100,
-    height: 100,
+    width: 40,
+    height: 40,
   },
   loginHeaderText: {
     color: '#fff',
@@ -35,8 +38,8 @@ const styles = StyleSheet.create({
   loginPane: {
     backgroundColor: "rgba(0,0,0,0)",
     alignItems: 'center',
-    width: '80%',
-    height: '30%',
+    justifyContent: 'center',
+    flex: 1,
     marginTop: 20,
     padding: 5,
   }
@@ -46,12 +49,19 @@ class LoginScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { user: { matricNumber: '', password: '' } }
+    this.state = { user: { matricNumber: '', password: '' }, isLoading: false, error: '' }
     this.render = this.render.bind(this);
     this.onNumberChange = this.onNumberChange.bind(this);
     this.onPasswordChange = this.onPasswordChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    if (nextProps.error) {
+      this.setState({ isLoading: false, error: nextProps.error });
+    }
   }
 
   onNumberChange(text) {
@@ -69,13 +79,11 @@ class LoginScreen extends React.Component {
   }
 
   onSubmit() {
+    this.setState({ isLoading: true });
     const user = this.state.user;
     this.props.userLogin(user)
       .then(() => {
-        Alert.alert('Success', 'User logged in successfully');
-      })
-      .catch(() => {
-        Alert.alert('Error', 'Error occurred');
+        this.setState({ isLoading: false });
       });
   }
   static navigationOptions = {
@@ -85,6 +93,7 @@ class LoginScreen extends React.Component {
   }
 
   render() {
+    const { isLoading } = this.state;
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <LinearGradient colors={['#1e3c72', '#2a5298']} style={styles.headerDescription}>
@@ -92,9 +101,10 @@ class LoginScreen extends React.Component {
           <Text style={styles.loginHeaderText}>
             Sign In
           </Text>
+          <ScrollView style={{ width: 300 }}>
           <View style={styles.loginPane}>
             <Hideo
-              style={{ marginTop: 0, height: 50 }}
+              style={{ marginTop: 10, height: 50 }}
               iconClass={FontAwesomeIcon}
               iconName={'school'}
               iconColor={'white'}
@@ -104,7 +114,7 @@ class LoginScreen extends React.Component {
             />
 
             <Hideo
-              style={{ marginTop: 0, height: 50, }}
+              style={{ marginTop: 10, height: 50, }}
               iconClass={FontAwesomeIcon}
               iconName={'lock'}
               iconColor={'white'}
@@ -112,10 +122,23 @@ class LoginScreen extends React.Component {
               iconBackgroundColor={'rgba(0,0,0,0.1)'}
               inputStyle={{ color: '#fff', backgroundColor: 'rgba(0,0,0,0.1)' }}
             />
+            <Text style={appStyles.errorText}>
+              {this.state.error}
+            </Text>
+            {!isLoading &&
             <Button style={{ backgroundColor: '#FF4081' }} textStyle={{ fontSize: 18, color: '#fff' }} onPress={this.onSubmit}>
               Login
             </Button>
+            }
+            {!isLoading &&
+              <Text style={{ color: '#fff', fontSize: 19 }} onPress={() => this.props.navigation.dispatch({ type: 'SignUp' })}>Register</Text>
+            }
+            {isLoading &&
+            <Progress.Bar indeterminate width={200} />
+            }
+           
           </View>
+           </ScrollView>
         </LinearGradient>
       </View>
     );
@@ -126,10 +149,12 @@ class LoginScreen extends React.Component {
 LoginScreen.propTypes = {
   navigation: PropTypes.object.isRequired,
   userLogin: PropTypes.func.isRequired,
+  error: PropTypes.string
 };
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.auth.isLoggedIn,
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.auth.error
 });
 
 

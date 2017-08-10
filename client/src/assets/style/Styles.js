@@ -33,7 +33,7 @@ const Styles = StyleSheet.create({
     },
     userFullName: {
       color: '#fff',
-      fontSize: 20,
+      fontSize: 15,
     },
     appMenu: {
       flex: 2,
@@ -64,6 +64,11 @@ const Styles = StyleSheet.create({
     labInput: {
       width: 200,
       height: 50,
+    },
+    errorText: {
+      fontSize: 14,
+      color: '#ff0000',
+      marginTop: 10
     }
 });
 

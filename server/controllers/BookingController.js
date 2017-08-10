@@ -1,4 +1,4 @@
-import { Bookings } from '../models';
+import { Bookings, LabPurpose, Labs } from '../models';
 
 class BookingController {
 
@@ -10,17 +10,26 @@ class BookingController {
   }
 
   static getUserBookings(req, res) {
-    Bookings.find({ where: { studentId: req.params.id } })
+    Bookings.find({
+      where: { studentId: req.params.id },
+      include: [{ model: Labs  }]
+    })
       .then((bookings) => {
         res.status(200).send(bookings);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).send(error);
       });
   }
 
   static getUserBookingsByDate(req, res) {
-    Bookings.find({ where: {
-      date: req.params.date,
-      studentId: req.decoded.studentId,
-    } })
+    Bookings.find({
+      where: {
+        date: req.params.date,
+        studentId: req.decoded.studentId,
+      }
+    })
       .then((bookings) => {
         res.status(200).send(bookings)
       });
@@ -29,8 +38,14 @@ class BookingController {
   static bookLab(req, res) {
     Bookings.find({
       where: {
-        studentId: req.decoded.studentId,
-        labId: req.body.labId
+        $and: [
+          {
+            studentId: req.body.studentId
+          },
+          {
+            labId: req.body.labId
+          }
+        ]
       }
     })
       .then((booked) => {
@@ -42,6 +57,9 @@ class BookingController {
               return res.status(201).status({ message: "Successfully booked lab" });
             });
         }
+      })
+      .catch(() => {
+        return res.status(400).send({ message: 'Error occurred' });
       });
   }
 
