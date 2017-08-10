@@ -1,6 +1,7 @@
 import { NavigationActions } from 'react-navigation';
 import { Alert } from 'react-native';
 import { AppNavigator } from '../navigators/AppNavigator';
+import actionTypes from '../constants';
 
 
 // Start with two routes: The Main screen, with the Login screen on top.
@@ -16,12 +17,7 @@ export default function nav(state = initialNavState, action) {
   let nextState;
   switch (action.type) {
     case 'Login':
-      nextState = AppNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'Login' }),
-        state
-      );
-      break;
-    case 'Logout':
+    case actionTypes.USER_LOGOUT:
       nextState = AppNavigator.router.getStateForAction(
         NavigationActions.navigate({ routeName: 'Login' }),
         state
@@ -34,6 +30,7 @@ export default function nav(state = initialNavState, action) {
     );
     break;
     case 'AppScreen':
+    case actionTypes.LOGIN_USER:
       nextState = AppNavigator.router.getStateForAction(
         NavigationActions.reset({ index: 0, actions: [NavigationActions.navigate({ routeName: 'Main' })] }),
         state

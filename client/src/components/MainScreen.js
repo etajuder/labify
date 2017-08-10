@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
+import { StyleSheet, View, Image, Text, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import appStyles from '../assets/style/Styles';
@@ -7,28 +7,40 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import LoginStatusMessage from './LoginStatusMessage';
 import AuthButton from './AuthButton';
+import { userLogout } from '../actions/userActions';
 
 
 
 class MainScreen extends React.Component {
+  constructor(props) {
+    super(props);
 
-  static navigationOptions = {
-    title: 'Home',
-    headerStyle: { backgroundColor: '#1e3c72' },
-    headerTitleStyle: { color: '#ffffff' }
+    this.userLogout = this.userLogout.bind(this);
   }
+
+  userLogout() {
+    AsyncStorage.clear()
+      .then(() => {
+        this.props.userLogout();
+      });
+  }
+
   render() {
+    const { user } = this.props;
     return (
       <LinearGradient colors={['#1e3c72', '#2a5298']} style={appStyles.bodyPane}>
         <View style={appStyles.profilePane}>
           <View style={appStyles.userProfile}>
             <Icon name={'settings'} style={appStyles.actionIcon} />
             <Image source={require('../assets/images/user_circle.png')} style={appStyles.userProfileImage} />
-            <Icon name={'settings-power'} style={appStyles.actionIcon} onPress={() => this.props.navigation.dispatch({ type: 'Login' })} />
+            <Icon name={'settings-power'} style={appStyles.actionIcon} onPress={this.userLogout} />
           </View>
           <View style={appStyles.userMetaData}>
             <Text style={appStyles.userFullName}>
-              Etanuwoma Jude
+              Matric No: {user.regNo}
+            </Text>
+            <Text style={appStyles.userFullName}>
+              {user.fullName}
             </Text>
           </View>
         </View>
@@ -59,13 +71,21 @@ class MainScreen extends React.Component {
   }
 }
 
+MainScreen.navigationOptions = {
+    title: 'Home',
+    headerStyle: { backgroundColor: '#1e3c72' },
+    headerTitleStyle: { color: '#ffffff' }
+  }
+
 MainScreen.propTypes = {
   navigation: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired
+  userLogout: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.auth.isLoggedIn,
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user
 });
 
-export default connect(mapStateToProps)(MainScreen);
+export default connect(mapStateToProps, { userLogout })(MainScreen);

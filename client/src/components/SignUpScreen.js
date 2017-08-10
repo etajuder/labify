@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
+import faker from 'faker';
 import Button from 'apsl-react-native-button'
 import FontAwesomeIcon from 'react-native-vector-icons/MaterialIcons';
 import {
@@ -13,6 +14,8 @@ import {
   ScrollView
 } from 'react-native';
 import { Hideo, Makiko, Hoshi } from 'react-native-textinput-effects';
+import { registerUser } from '../actions/userActions';
+import * as Progress from 'react-native-progress';
 
 const bottom = 180 / 100;
 const styles = StyleSheet.create({
@@ -44,8 +47,9 @@ class SignUpScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { user: { studentId: '', password: '' } }
+    this.state = { user: { regNo: '', password: '', fullName: '', email: '', username: faker.internet.userName() }, isLoading: false }
     this.render = this.render.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   static navigationOptions = {
@@ -53,7 +57,22 @@ class SignUpScreen extends React.Component {
     header: null,
     headerVisible: false,
   }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ error: nextProps.error })
+  }
+
+  onSubmit() {
+    this.setState({ isLoading: true });
+    const user = {...this.state.user};
+    this.props.registerUser(user)
+      .then(() => {
+        this.setState({ isLoading: false });
+      });
+  }
+
   render() {
+    const { isLoading } = this.state;
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <LinearGradient colors={['#1e3c72', '#2a5298']} style={styles.headerDescription}>
@@ -67,13 +86,15 @@ class SignUpScreen extends React.Component {
                 iconClass={FontAwesomeIcon}
                 iconName={'edit'}
                 iconColor={'white'}
+                onChangeText={(text) => this.setState({ user: {...this.state.user, fullName: text} })}
                 style={{ backgroundColor: 'rgba(0,0,0,0.1)', marginTop: 10, width: 300 }}
                 inputStyle={{ color: '#db786d' }}
               />
               <Makiko
-                label={'Student ID'}
+                label={'Student Number'}
                 iconClass={FontAwesomeIcon}
                 iconName={'school'}
+                onChangeText={(text) => this.setState({ user: {...this.state.user, regNo: text} })}
                 iconColor={'white'}
                 style={{ backgroundColor: 'rgba(0,0,0,0.1)', marginTop: 10 }}
                 inputStyle={{ color: '#db786d', backgroundColor: 'rgba(0,0,0,0.1)' }}
@@ -82,6 +103,7 @@ class SignUpScreen extends React.Component {
                 label={'Email'}
                 iconClass={FontAwesomeIcon}
                 iconName={'email'}
+                onChangeText={(text) => this.setState({ user: {...this.state.user, email: text} })}
                 iconColor={'white'}
                 style={{ backgroundColor: 'rgba(0,0,0,0.1)', marginTop: 10 }}
                 inputStyle={{ color: '#db786d', backgroundColor: 'rgba(0,0,0,0.1)' }}
@@ -90,13 +112,19 @@ class SignUpScreen extends React.Component {
                 label={'Password'}
                 iconClass={FontAwesomeIcon}
                 iconName={'lock'}
+                onChangeText={(text) => this.setState({ user: {...this.state.user, password: text} })}
                 iconColor={'white'}
                 style={{ backgroundColor: 'rgba(0,0,0,0.1)', marginTop: 10 }}
                 inputStyle={{ color: '#db786d', backgroundColor: 'rgba(0,0,0,0.1)' }}
               />
-              <Button style={{ backgroundColor: '#FF4081', marginTop: 10 }} textStyle={{ fontSize: 18, color: '#fff' }} onPress={() => this.props.navigation.dispatch({ type: 'AppScreen' })}>
+              {!isLoading &&
+              <Button style={{ backgroundColor: '#FF4081', marginTop: 10 }} textStyle={{ fontSize: 18, color: '#fff' }} onPress={this.onSubmit}>
                 Register
-            </Button>
+              </Button>
+              }
+            {isLoading &&
+            <Progress.Bar indeterminate width={250} style={{ marginTop: 15 }} />
+            }
             </View>
           </ScrollView>
         </LinearGradient>
@@ -107,7 +135,7 @@ class SignUpScreen extends React.Component {
 }
 SignUpScreen.propTypes = {
   navigation: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
+  registerUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -115,4 +143,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps)(SignUpScreen);
+export default connect(mapStateToProps, { registerUser })(SignUpScreen);

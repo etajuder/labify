@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { DrawerNavigator } from 'react-navigation';
 import ProfileScreen from './ProfileScreen';
+import { userLogout } from '../actions/userActions';
 import MainScreen from './MainScreen';
 
 
