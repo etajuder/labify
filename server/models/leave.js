@@ -6,7 +6,9 @@ module.exports = function(sequelize, DataTypes) {
     dateGoing: DataTypes.STRING,
     dateComing: DataTypes.STRING,
     reason: DataTypes.TEXT,
-    status: DataTypes.STRING
+    status: DataTypes.STRING,
+    location: DataTypes.STRING,
+    time: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
