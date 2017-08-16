@@ -30,10 +30,19 @@ export function getLabBookingsSuccessful(bookings) {
   }
 }
 
+export function cancleLabSuccess(booking) {
+  return {
+    type: actionTypes.CANCEL_LAB_SUCCESS,
+    booking
+  }
+}
+
+
 export function getAllLabs(){
   return (dispatch) => {
      return axios.get('/labs')
       .then((labs) => {
+        console.log(labs);
         dispatch(getLabSuccessful(labs.data));
       })
       .catch((error) => {
@@ -47,6 +56,7 @@ export function getAllLabPurposes() {
   return (dispatch) => {
     return axios.get('/purposes')
       .then((response) => {
+        console.log(response);
         dispatch(getAllLabPurposesSuccessful(response.data));
       })
       .catch((error) => {
@@ -58,9 +68,8 @@ export function getAllLabPurposes() {
 
 export function bookLab(booking) {
   return (dispatch) => {
-    return axios.post('/bookings', booking)
+    return axios.post('/addbooking', `purposeId=${booking.purposeId}&labId=${booking.labId}&userId=${booking.studentId}&date=${booking.date}&time=${booking.time}`)
       .then((booking) => {
-        console.log(booking);
         dispatch(labBookingSuccessful(booking));
       })
       .catch((error) => {
@@ -74,12 +83,25 @@ export function getStudentLabBooking(studentId) {
   return (dispatch) => {
     return axios.get(`/bookings/${studentId}`)
       .then((bookings) => {
-        console.log(bookings);
          dispatch(getLabBookingsSuccessful(bookings.data));
       })
       .catch((error) => {
         ToastAndroid.show('Server error, please try again', ToastAndroid.LONG);
         console.log(error);
+      });
+  }
+}
+
+export function cancelBooking(booking) {
+  return (dispatch) => {
+    return axios.post('/cancelbooking', `bookingId=${booking.id}`)
+      .then((response) => {
+        ToastAndroid.show('Lab Booking Canceled', ToastAndroid.LONG);
+        dispatch(cancleLabSuccess(booking));
+      })
+      .catch((error) => {
+        console.log(error);
+        ToastAndroid.show('Server error, could not cancle lab booking', ToastAndroid.LONG);
       });
   }
 }

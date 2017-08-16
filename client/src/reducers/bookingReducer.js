@@ -16,12 +16,19 @@ export default function bookings(state = initialState.manageBookings, action) {
     case actionTypes.LAB_BOOKING_SUCCESS:
       return {
         ...state,
-        bookings: [...state.bookings, action.booking]
+        bookings: [...action.booking]
       }
+
     case actionTypes.GET_LAB_BOOKINGS_SUCCESS:
       return {
         ...state,
         bookings: [...action.bookings]
+      }
+
+    case actionTypes.CANCEL_LAB_SUCCESS:
+      return {
+        ...state,
+        bookings: state.bookings.filter(({ id }) => id !== action.booking.id),
       }
     default:
       return state;

@@ -10,6 +10,7 @@ import MainScreen from '../components/MainScreen';
 import ManageBookings from '../components/ManageBooking';
 import Intro from '../components/Intro';
 import SignUpScreen from '../components/SignUpScreen';
+import EditProfileScreen from '../components/EditProfileScreen';
 
 
 export const AppNavigator = StackNavigator({
@@ -20,7 +21,8 @@ export const AppNavigator = StackNavigator({
   SignUp: {screen: SignUpScreen},
   BookLab: { screen: BookLab },
   ViewLabs: { screen: ViewLabs},
-  ManageBookings: { screen: ManageBookings }
+  ManageBookings: { screen: ManageBookings },
+  EditProfile: { screen: EditProfileScreen }
 }, {
   headerMode: 'screen',
   style: { backgroundColor: 'red'},

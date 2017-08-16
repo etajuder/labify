@@ -7,9 +7,6 @@ export default function checkAuth(store) {
     AsyncStorage.getItem('USER:DATA:PERS')
       .then((data) => {
         const userData = JSON.parse(data);
-        axiosCall.defaults.headers = {
-          'x-access-token': userData.token
-        };
         store.dispatch(setLoggedInUser(userData.data));
       })
       .catch(() => {

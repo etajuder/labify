@@ -14,6 +14,7 @@ import {
   ScrollView
 } from 'react-native';
 import { Hideo, Makiko, Hoshi } from 'react-native-textinput-effects';
+import { FormLabel, FormInput } from 'react-native-elements';
 import { registerUser } from '../actions/userActions';
 import * as Progress from 'react-native-progress';
 
@@ -64,7 +65,7 @@ class SignUpScreen extends React.Component {
 
   onSubmit() {
     this.setState({ isLoading: true });
-    const user = {...this.state.user};
+    const user = { ...this.state.user };
     this.props.registerUser(user)
       .then(() => {
         this.setState({ isLoading: false });
@@ -81,50 +82,27 @@ class SignUpScreen extends React.Component {
               <FontAwesomeIcon name="close" size={30} color="#fff" onPress={() => this.props.navigation.dispatch({ type: 'Login' })} />
             </View>
             <View style={{ marginTop: 30 }}>
-              <Makiko
-                label={'Full Name'}
-                iconClass={FontAwesomeIcon}
-                iconName={'edit'}
-                iconColor={'white'}
-                onChangeText={(text) => this.setState({ user: {...this.state.user, fullName: text} })}
-                style={{ backgroundColor: 'rgba(0,0,0,0.1)', marginTop: 10, width: 300 }}
-                inputStyle={{ color: '#db786d' }}
-              />
-              <Makiko
-                label={'Student Number'}
-                iconClass={FontAwesomeIcon}
-                iconName={'school'}
-                onChangeText={(text) => this.setState({ user: {...this.state.user, regNo: text} })}
-                iconColor={'white'}
-                style={{ backgroundColor: 'rgba(0,0,0,0.1)', marginTop: 10 }}
-                inputStyle={{ color: '#db786d', backgroundColor: 'rgba(0,0,0,0.1)' }}
-              />
-              <Makiko
-                label={'Email'}
-                iconClass={FontAwesomeIcon}
-                iconName={'email'}
-                onChangeText={(text) => this.setState({ user: {...this.state.user, email: text} })}
-                iconColor={'white'}
-                style={{ backgroundColor: 'rgba(0,0,0,0.1)', marginTop: 10 }}
-                inputStyle={{ color: '#db786d', backgroundColor: 'rgba(0,0,0,0.1)' }}
-              />
-              <Makiko
-                label={'Password'}
-                iconClass={FontAwesomeIcon}
-                iconName={'lock'}
-                onChangeText={(text) => this.setState({ user: {...this.state.user, password: text} })}
-                iconColor={'white'}
-                style={{ backgroundColor: 'rgba(0,0,0,0.1)', marginTop: 10 }}
-                inputStyle={{ color: '#db786d', backgroundColor: 'rgba(0,0,0,0.1)' }}
-              />
+
+              <FormLabel>Full Name</FormLabel>
+              <FormInput onChangeText={(text) => this.setState({ user: { ...this.state.user, fullName: text } })} />
+              <FormLabel>Student Number</FormLabel>
+              <FormInput onChangeText={(text) => this.setState({ user: { ...this.state.user, regNo: text } })} />
+
+              <FormLabel>Email Address</FormLabel>
+              <FormInput onChangeText={(text) => this.setState({ user: { ...this.state.user, email: text } })} />
+
+
+              <FormLabel>Pass Key</FormLabel>
+              <FormInput onChangeText={(text) => this.setState({ user: { ...this.state.user, password: text } })} />
+    
               {!isLoading &&
-              <Button style={{ backgroundColor: '#FF4081', marginTop: 10 }} textStyle={{ fontSize: 18, color: '#fff' }} onPress={this.onSubmit}>
-                Register
+                <Button style={{ backgroundColor: '#FF4081', marginTop: 10 }} textStyle={{ fontSize: 18, color: '#fff' }} onPress={this.onSubmit}>
+                  Register
               </Button>
               }
-            {isLoading &&
-            <Progress.Bar indeterminate width={250} style={{ marginTop: 15 }} />
-            }
+              {isLoading &&
+                <Progress.Bar indeterminate width={250} style={{ marginTop: 15 }} />
+              }
             </View>
           </ScrollView>
         </LinearGradient>

@@ -3,226 +3,72 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { List, ListItem, Button, Icon } from 'react-native-elements';
+import { getStudentLabBooking, cancelBooking } from '../actions/bookingActions';
 
 class ManageBooking extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { bookings: [], purposes: [] };
+    this.state = { bookings: [...this.props.bookings], purposes: [] };
   }
-  componentWillReceiveProps(nextProps) {
-    Alert('New Props', nextProps);
-  }
+
   componentDidMount() {
-    console.log('I have mount o');
+    this.props.getStudentLabBooking(this.props.user.id)
+      .then(() => {
+        this.setState({ isLoading: false })
+      });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.bookings) {
+      this.setState({ bookings: [...nextProps.bookings] });
+    }
   }
 
   render() {
-   return (
-     <View style={{ flex: 1 }}>
-       <ScrollView style={{ flex: 1 }}>
+    const { bookings } = this.state;
+    return (
+      <View style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}>
           <List>
-            <ListItem
-              roundAvatar
-              title='Physics Lab'
-              subtitle={
-                <View style={styles.subtitleView}>
+            {bookings.map((booking, index) => {
+              return (
+                <ListItem
+                  key={`lab_${booking.labId}${Math.random() * (100 - 1) + 1}`}
+                  roundAvatar
+                  title={booking.lab}
+                  subtitle={
+                    <View style={styles.subtitleView}>
 
-                  <Button
-                    raised
-                    icon={{ name: 'cancel' }}
-                    title='Cancel Booking'
-                    backgroundColor={'#ff0000'} />
-                </View>
-              }
-              avatar={<Icon
-                name='sc-telegram'
-                type='evilicon'
-                color='#517fa4'
-              />}
-            />
-             <ListItem
-              roundAvatar
-              title='Physics Lab'
-              subtitle={
-                <View style={styles.subtitleView}>
+                      <Button
+                        raised
+                        icon={{ name: 'cancel' }}
+                        title='Cancel Booking'
+                        backgroundColor={'#ff0000'}
+                        onPress={() => this.props.cancelBooking(booking)}
+                        />
+                    </View>
+                  }
+                  avatar={<Icon
+                    name='sc-telegram'
+                    type='evilicon'
+                    color='#517fa4'
+                  />}
+                />
+              );
+            })}
 
-                  <Button
-                    raised
-                    icon={{ name: 'cancel' }}
-                    title='Cancel Booking'
-                    backgroundColor={'#ff0000'} />
-                </View>
-              }
-              avatar={<Icon
-                name='sc-telegram'
-                type='evilicon'
-                color='#517fa4'
-              />}
-            />
-             <ListItem
-              roundAvatar
-              title='Physics Lab'
-              subtitle={
-                <View style={styles.subtitleView}>
-
-                  <Button
-                    raised
-                    icon={{ name: 'cancel' }}
-                    title='Cancel Booking'
-                    backgroundColor={'#ff0000'} />
-                </View>
-              }
-              avatar={<Icon
-                name='sc-telegram'
-                type='evilicon'
-                color='#517fa4'
-              />}
-            />
-             <ListItem
-              roundAvatar
-              title='Physics Lab'
-              subtitle={
-                <View style={styles.subtitleView}>
-
-                  <Button
-                    raised
-                    icon={{ name: 'cancel' }}
-                    title='Cancel Booking'
-                    backgroundColor={'#ff0000'} />
-                </View>
-              }
-              avatar={<Icon
-                name='sc-telegram'
-                type='evilicon'
-                color='#517fa4'
-              />}
-            />
-             <ListItem
-              roundAvatar
-              title='Physics Lab'
-              subtitle={
-                <View style={styles.subtitleView}>
-
-                  <Button
-                    raised
-                    icon={{ name: 'cancel' }}
-                    title='Cancel Booking'
-                    backgroundColor={'#ff0000'} />
-                </View>
-              }
-              avatar={<Icon
-                name='sc-telegram'
-                type='evilicon'
-                color='#517fa4'
-              />}
-            />
-             <ListItem
-              roundAvatar
-              title='Physics Lab'
-              subtitle={
-                <View style={styles.subtitleView}>
-
-                  <Button
-                    raised
-                    icon={{ name: 'cancel' }}
-                    title='Cancel Booking'
-                    backgroundColor={'#ff0000'} />
-                </View>
-              }
-              avatar={<Icon
-                name='sc-telegram'
-                type='evilicon'
-                color='#517fa4'
-              />}
-            />
-             <ListItem
-              roundAvatar
-              title='Physics Lab'
-              subtitle={
-                <View style={styles.subtitleView}>
-
-                  <Button
-                    raised
-                    icon={{ name: 'cancel' }}
-                    title='Cancel Booking'
-                    backgroundColor={'#ff0000'} />
-                </View>
-              }
-              avatar={<Icon
-                name='sc-telegram'
-                type='evilicon'
-                color='#517fa4'
-              />}
-            />
-             <ListItem
-              roundAvatar
-              title='Physics Lab'
-              subtitle={
-                <View style={styles.subtitleView}>
-
-                  <Button
-                    raised
-                    icon={{ name: 'cancel' }}
-                    title='Cancel Booking'
-                    backgroundColor={'#ff0000'} />
-                </View>
-              }
-              avatar={<Icon
-                name='sc-telegram'
-                type='evilicon'
-                color='#517fa4'
-              />}
-            />
-             <ListItem
-              roundAvatar
-              title='Physics Lab'
-              subtitle={
-                <View style={styles.subtitleView}>
-
-                  <Button
-                    raised
-                    icon={{ name: 'cancel' }}
-                    title='Cancel Booking'
-                    backgroundColor={'#ff0000'} />
-                </View>
-              }
-              avatar={<Icon
-                name='sc-telegram'
-                type='evilicon'
-                color='#517fa4'
-              />}
-            />
-             <ListItem
-              roundAvatar
-              title='Physics Lab'
-              subtitle={
-                <View style={styles.subtitleView}>
-
-                  <Button
-                    raised
-                    icon={{ name: 'cancel' }}
-                    title='Cancel Booking'
-                    backgroundColor={'#ff0000'} />
-                </View>
-              }
-              avatar={<Icon
-                name='sc-telegram'
-                type='evilicon'
-                color='#517fa4'
-              />}
-            />
           </List>
-       </ScrollView>
-     </View>
-   );
+        </ScrollView>
+      </View>
+    );
   }
 }
 
 const styles = StyleSheet.create({
   subtitleView: {
     flexDirection: 'row',
-    paddingLeft: 10,
+    marginBottom: 10,
     paddingTop: 5
   },
   ratingImage: {
@@ -245,12 +91,16 @@ ManageBooking.navigationOptions = {
 }
 
 ManageBooking.propTypes = {
- navigation: PropTypes.object.isRequired,
- dispatch: PropTypes.func.isRequired,
+  navigation: PropTypes.object.isRequired,
+  bookings: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
+  cancelBooking: PropTypes.func.isRequired,
 };
 
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.auth.isLoggedIn
+  isLoggedIn: state.auth.isLoggedIn,
+  bookings: state.booking.bookings,
+  user: state.auth.user,
 });
-export default connect(mapStateToProps)(ManageBooking);
+export default connect(mapStateToProps, { getStudentLabBooking, cancelBooking })(ManageBooking);

@@ -25,9 +25,13 @@ class StudentsController {
               res.status(201).send({ data: student, token });
             })
             .catch((error) => {
+              console.log(error);
               res.status(500).send({ message: 'Error occurred' });
             });
         }
+      }).catch((error) => {
+        console.log(error);
+        res.status(500).send(error);
       })
   }
 

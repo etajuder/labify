@@ -67,7 +67,6 @@ class LoginScreen extends React.Component {
   onNumberChange(text) {
     const user = this.state.user;
     user.matricNumber = text;
-    console.log(text);
     this.setState({ user });
   }
 

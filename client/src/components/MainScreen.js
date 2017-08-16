@@ -61,7 +61,7 @@ class MainScreen extends React.Component {
               <Text style={{ color: '#fff' }}>Manage Lab</Text>
             </View>
             <View style={appStyles.menuAction}>
-              <Icon name={'account-box'} style={{ color: '#fff', fontSize: 40 }} />
+              <Icon name={'account-box'} style={{ color: '#fff', fontSize: 40 }} onPress={() => this.props.navigation.dispatch({ type: 'EditProfile' }) } />
               <Text style={{ color: '#fff' }}>Edit Profile</Text>
             </View>
           </View>

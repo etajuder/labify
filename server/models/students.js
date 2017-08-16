@@ -57,5 +57,12 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
+  Students.prototype.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+  }
+
+  Students.prototype.hashPassword = function() {
+    this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8))
+  }
   return Students;
 };

@@ -19,6 +19,13 @@ class ViewLabs extends React.Component {
        this.setState({ isLoading: false })
      });
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.bookings) {
+      this.setState({ bookings: nextProps.bookings });
+    }
+  }
+
   render() {
     const { bookings } = this.state;
     return (
@@ -27,11 +34,12 @@ class ViewLabs extends React.Component {
           {bookings.map((booking, index) => {
             return (
               <PricingCard
-            color='#b33a3a'
-            title='Chemistry Lab'
-            price='10PM - 12PM'
-            info={['3 Students', '25-30-2017']}
-            button={{ title: 'Pending', icon: 'av-timer' }}
+            key={`${index}_book`}
+            color={booking.total >= 5 ? '#1e3c72': '#b33a3a'}
+            title={booking.lab}
+            price={booking.time}
+            info={[`${booking.total} Student(s)`, booking.date]}
+            button={{ title: booking.total >= 5 ? 'Approved' : 'Pending', icon: 'av-timer'}}
           />
             );
           })}

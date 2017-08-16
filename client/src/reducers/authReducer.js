@@ -21,8 +21,13 @@ export default function auth(state = initialState.auth, action) {
     case actionTypes.LOGIN_USER_ERROR:
       return {
         ...state,
-        error: action.error
+        error: action.error,
       };
+    case actionTypes.PROFILE_UPDATE_SUCCESS:
+      return {
+        ...state,
+        user: action.user,
+      }
     default:
      return state;
   }

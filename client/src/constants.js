@@ -10,4 +10,6 @@ export default keymirror({
     GET_LABS_PURPOSES_SUCCESS: null,
     LAB_BOOKING_SUCCESS: null,
     GET_LAB_BOOKINGS_SUCCESS: null,
+    CANCEL_LAB_SUCCESS: null,
+    PROFILE_UPDATE_SUCCESS: null,
 });

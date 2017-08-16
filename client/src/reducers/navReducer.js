@@ -24,11 +24,11 @@ export default function nav(state = initialNavState, action) {
       );
       break;
     case 'SignUp':
-    nextState = AppNavigator.router.getStateForAction(
-      NavigationActions.navigate({ routeName: 'SignUp' }),
-      state
-    );
-    break;
+      nextState = AppNavigator.router.getStateForAction(
+        NavigationActions.navigate({ routeName: 'SignUp' }),
+        state
+      );
+      break;
     case 'AppScreen':
     case actionTypes.LOGIN_USER:
       nextState = AppNavigator.router.getStateForAction(
@@ -41,20 +41,26 @@ export default function nav(state = initialNavState, action) {
         NavigationActions.navigate({ routeName: 'BookLab' }),
         state
       );
-    break;
-    
+      break;
+
     case 'ViewLabs':
       nextState = AppNavigator.router.getStateForAction(
         NavigationActions.navigate({ routeName: 'ViewLabs' }),
         state
       );
-    break;
+      break;
     case 'ManageBookings':
       nextState = AppNavigator.router.getStateForAction(
         NavigationActions.navigate({ routeName: 'ManageBookings' }),
         state
       );
-    break;
+      break;
+    case 'EditProfile':
+      nextState = AppNavigator.router.getStateForAction(
+        NavigationActions.navigate({ routeName: 'EditProfile' }),
+        state
+      );
+      break;
     default:
       nextState = AppNavigator.router.getStateForAction(action, state);
       break;
